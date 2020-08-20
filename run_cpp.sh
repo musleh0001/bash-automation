@@ -4,22 +4,18 @@
 # Author: Md Musleh Uddin
 # Created at: Aug 17, 2020
 
-
-LOC=/home/musleh/programming/cpp
-DIR=''
+FOUND=''
 FILE=''
 
 usage () {
-    echo "Usage: ${0} [-i INPUT FILE] [-d DIRECTORY ]" >&2
+    echo "Usage: ${0} [-i INPUT FILE]" >&2
     echo "Build and Run C++ program"
     echo "  -i  INPUT FILE  Specify the input file"
-    echo "  -d  DIRECTORY  Specify the Directory"
     exit 1
 }
 
 execute () {
-    cd ${LOC}/${DIR}
-    clang++ ${FILE} -o a
+    g++ -std=c++14 ${FOUND} -o a
     time ./a
     rm a
 
@@ -29,12 +25,9 @@ execute () {
     fi
 }
 
-while getopts i:d: OPTION 
+while getopts i: OPTION 
 do
 	case ${OPTION} in
-		d)
-			DIR=${OPTARG}
-			;;
 		i)
 			FILE=${OPTARG}
 			;;
@@ -44,15 +37,15 @@ do
 	esac
 done
 
-if [[ $# -lt 4 ]]
+if [[ $# -lt 2 ]]
 then
     usage
-elif [[ ! -d ${LOC}/${DIR} ]]
+fi
+
+FOUND=$(find /home/musleh/ -name "${FILE}")
+if [[ -z ${FOUND} ]]
 then
-    echo "${DIR} dir not found!" >&2
-elif [[ ! -f ${LOC}/${DIR}/${FILE} ]]
-then
-    echo "${FILE} file not found!" >&2
+    echo "${FILE} not found!"
 else
     execute
 fi
