@@ -16,6 +16,7 @@ usage () {
 
 execute () {
     g++ -std=c++14 ${FOUND} -o a
+    size a
     time ./a
     rm a
 
